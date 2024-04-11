@@ -1,6 +1,6 @@
 package com.example.sampleproject
 
->import android.content.pm.ApplicationInfo
+import android.content.pm.ApplicationInfo
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
