@@ -2,12 +2,15 @@ package com.example.sampleproject
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.webkit.MimeTypeMap
 import coil.annotation.ExperimentalCoilApi
 import coil.imageLoader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+
 
 @OptIn(ExperimentalCoilApi::class)
 suspend fun shareImage(
@@ -64,7 +67,19 @@ suspend fun shareImage(
                             type = mimeType
                         }
 
-                        val shareIntent = Intent.createChooser(sendIntent, "")
+                        val shareIntent = Intent.createChooser(sendIntent, "Share images")
+
+                        val resInfoList: List<ResolveInfo> =
+                            context.packageManager.queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY)
+
+                        for (resolveInfo in resInfoList) {
+                            val packageName = resolveInfo.activityInfo.packageName
+                            context.grantUriPermission(
+                                packageName,
+                                imageCacheUri,
+                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            )
+                        }
 
                         context.startActivity(shareIntent)
                     }
