@@ -1,5 +1,6 @@
 package com.example.sampleproject
 
+import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,9 +35,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
+import coil.ImageLoader
 import coil.request.ErrorResult
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import coil.util.DebugLogger
 import com.example.sampleproject.ui.theme.SampleProjectTheme
 import me.saket.telephoto.zoomable.ZoomSpec
 import me.saket.telephoto.zoomable.coil.ZoomableAsyncImage
@@ -47,6 +50,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        ImageLoader.Builder(this).apply {
+            respectCacheHeaders(false)
+            if (0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) {
+                logger(DebugLogger())
+            }
+        }.build()
 
         val listImages = listOf(
             "https://plus.unsplash.com/premium_photo-1668024966086-bd66ba04262f?q=80&w=2092&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -83,9 +93,7 @@ fun PagerViewer(
     images: List<String>
 ) {
 
-    val pagerState = rememberPagerState {
-        images.size
-    }
+    val pagerState = rememberPagerState { images.size }
 
     val currentImage = remember(pagerState.currentPage) {
         try {

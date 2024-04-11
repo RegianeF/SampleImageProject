@@ -21,6 +21,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            isDebuggable = true
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -70,4 +74,9 @@ dependencies {
 
     implementation("me.saket.telephoto:zoomable-image-coil:0.9.0")
     implementation("me.saket.telephoto:zoomable-image-glide:0.9.0")
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-gif:2.5.0")
+    implementation("io.coil-kt:coil-svg:2.5.0")
+    implementation("io.coil-kt:coil-video:2.5.0")
 }
