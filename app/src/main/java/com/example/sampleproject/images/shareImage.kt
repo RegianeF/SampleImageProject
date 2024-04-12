@@ -1,4 +1,4 @@
-package com.example.sampleproject
+package com.example.sampleproject.images
 
 import android.content.Context
 import android.content.Intent
